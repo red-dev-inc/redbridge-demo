@@ -1,0 +1,134 @@
+/* Text styles */
+.label-title-transaction {
+  font-size: 1.8rem;
+  color: #fff;
+  font-weight: 600;
+}
+
+.main-title {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.label-title {
+  height: 3.5rem;
+}
+
+.currency-label {
+  font-size: 1.4rem;
+  color: #ffffff;
+  margin-right: 0.5rem;
+}
+
+.currency-name {
+  color: #6e6e6e;
+}
+
+#toLabel,
+#toAmountIcon {
+  display: inline-block;
+  margin: auto;
+}
+
+.balance-text {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: #ffffff;
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 8px;
+}
+
+.max-text {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #ffffff;
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 8px;
+  cursor: pointer;
+}
+
+.transaction-status {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #fff;
+  margin-bottom: 0.8rem;
+}
+
+.transaction-status-message {
+  font-size: 1.4rem;
+  color: #fff;
+  font-weight: normal;
+}
+
+/* Small groups */
+
+.currency-group {
+  display: flex;
+  align-items: center;
+}
+
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.3rem;
+  gap: 1rem;
+  color: #ffffff;
+  margin: 0 3rem 3rem;
+}
+
+.transaction-label {
+  display: flex;
+  align-items: center;
+}
+
+.network-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.network-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 3rem 3rem;
+  font-size: 1.3rem;
+  color: white;
+}
+
+.network {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.spacer {
+  width: 100%;
+}
+
+/* Backgrounds */
+
+.receiving-bg {
+  padding: 2rem 3rem;
+  text-align: left;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  font-weight: bold;
+  border-bottom-left-radius: inherit;
+  border-bottom-right-radius: inherit;
+  background-color: rgb(255, 255, 255, 0.1);
+  backdrop-filter: blur(30px) brightness(1.2) opacity(0.17);
+  -webkit-backdrop-filter: blur(30px) brightness(1.2) opacity(0.17);
+  font-size: 1.3rem;
+}
+
+.blur-background {
+  filter: blur(5px);
+  transition: filter 0.3s ease;
+}

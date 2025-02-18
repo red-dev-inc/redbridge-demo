@@ -1,0 +1,35 @@
+/* Buttons */
+
+.continue-button {
+  background: transparent;
+  border: 3px solid #ffffff;
+  border-radius: 15px;
+  color: white;
+  padding: 1.2rem 0.5rem;
+  width: 100%;
+  margin-top: 2.5rem;
+  font-size: 1.7rem;
+  font-weight: 600;
+  backdrop-filter: blur(11px);
+  -webkit-backdrop-filter: blur(11px);
+  cursor: pointer;
+}
+
+.btn-cancel,
+.btn-bridge,
+.btn-again {
+  background-color: transparent;
+  border: 2px solid white;
+  border-radius: 15px;
+  color: white;
+  width: calc(50% - 0.6rem);
+  padding: 1.2rem 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-again {
+  width: 100%;
+  margin-top: 2.5rem;
+}

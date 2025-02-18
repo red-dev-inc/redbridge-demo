@@ -1,0 +1,75 @@
+/* Input styles */
+
+.form-select,
+.form-control {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid white;
+  color: white;
+  padding: 0.6rem 1.5rem;
+  border-radius: 6px;
+  font-size: 1.1rem;
+}
+
+.form-select:focus,
+.form-control:focus {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.8);
+  color: white;
+  box-shadow: none;
+}
+
+.form-control,
+.form-control:hover,
+.form-control:focus,
+.form-control input {
+  background-color: #ffffff;
+  color: #6e6e6e;
+  text-align: right;
+  font-family: "Segoe UI";
+}
+
+.currency-input {
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 6px;
+  padding: 0.6rem 1.5rem;
+}
+
+.currency-input .form-control {
+  padding: 0 0.4rem 0;
+  width: 90%;
+  border: none;
+}
+
+.currency-input input:focus {
+  outline: none;
+}
+
+.currency-input input::placeholder {
+  color: #c0c0c0;
+}
+
+.currency-input input::-webkit-outer-spin-button,
+.currency-input input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.currency-input input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.currency-input-wrapper:first-of-type .currency-input {
+  margin-top: 0;
+}
+
+.currency-input-wrapper {
+  position: relative;
+}
+
+.transaction-item .form-select {
+  flex: 1;
+  max-width: 90%;
+}

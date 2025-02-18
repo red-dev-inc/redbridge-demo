@@ -1,0 +1,81 @@
+/* Containers */
+
+.main-container {
+  width: 100%;
+  max-width: 57rem;
+  padding-top: 2rem;
+  padding-left: 2rem;
+  padding-bottom: 2rem;
+  padding-right: 2rem;
+  position: relative;
+}
+
+.title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.bridge-card,
+.transaction-bridge-card,
+.transaction-bridge-status {
+  color: #ebe4e4;
+  background-color: #e92f38ae;
+  border: 3px solid #ffffffbf;
+  border-radius: 1rem;
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.bridge-card {
+  padding: 4rem 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.transaction-bridge-card {
+  padding-top: 3rem;
+}
+
+.transaction-bridge-status {
+  padding: 1.5rem 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.currency-section,
+.amount-section {
+  display: grid;
+  grid-template-columns: 3.7rem 15rem auto 3.7rem 15rem;
+  gap: 1rem;
+  align-items: center;
+}
+
+.currency-section {
+  margin-bottom: 3rem;
+}
+
+.amount-section {
+  margin-top: 1.5rem;
+}
+
+.mb-arrow {
+  display: none;
+}
+
+.arrow-section {
+  margin: auto;
+  cursor: pointer;
+}
+
+.ds-arrow {
+  padding: 0.5rem 0 1rem;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 2.5rem;
+}

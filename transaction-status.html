@@ -1,0 +1,178 @@
+<!-- Transaction Status Page Content -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>red·bridge Demo</title>
+
+    <!-- Favicon for the webpage -->
+    <link rel="icon" type="image/x-icon" href="/img/zavax-icon.png">
+
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="./css/index.css" />
+
+    <!-- Importing JavaScript modules -->
+    <script type="module" src="./js/main.js"></script>
+    <script type="module" src="./js/statusInput.js"></script>
+  </head>
+  <body>
+    <!-- Right background SVG -->
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      viewBox="0 0 2153.631 2153.631"
+      style="
+        position: fixed;
+        top: -10%;
+        left: -33%;
+        width: 100%;
+        height: 200vh;
+        z-index: -1;
+      "
+    >
+      <defs>
+        <linearGradient
+          id="linear-gradient"
+          x1="0.402"
+          y1="0.756"
+          x2="0.42"
+          y2="-0.124"
+          gradientUnits="objectBoundingBox"
+        >
+          <stop offset="0" stop-color="#ef1a1a" />
+          <stop offset="1" stop-color="#780d0d" stop-opacity="0.741" />
+        </linearGradient>
+      </defs>
+      <path
+        id="Path_38"
+        data-name="Path 38"
+        d="M1986.814,15036.575s235.74-203.607,621.486-145.014,759.595,407.418,1201.542,138.108-586.96,1201.54-897.7,932.229-825.2-825.2-825.2-825.2Z"
+        transform="translate(9905.279 -11927.324) rotate(45)"
+        opacity="0.15"
+        fill="url(#linear-gradient)"
+      />
+    </svg>
+
+    <!-- Bottom background SVG -->
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      viewBox="0 0 2036.966 873.669"
+      style="
+        position: fixed;
+        top: 30%;
+        left: -23%;
+        width: 150%;
+        height: 100vh;
+        z-index: -1;
+        transform: rotate(0deg);
+      "
+    >
+      <defs>
+        <linearGradient
+          id="linear-gradient-overlay"
+          x1="0.477"
+          y1="0.755"
+          x2="0.449"
+          y2="0.244"
+          gradientUnits="objectBoundingBox"
+        >
+          <stop offset="0" stop-color="#ef1a1a" />
+          <stop offset="1" stop-color="#780d0d" />
+        </linearGradient>
+      </defs>
+      <path
+        id="Path_32_overlay"
+        data-name="Path 32"
+        d="M1984,14981.363s332.891-304.674,718.637-236.969,918.683,300.166,1195.361-169.262,0,767.322,0,767.322H1984Z"
+        transform="translate(-1984 -14468.786)"
+        opacity="0.16"
+        fill="url(#linear-gradient-overlay)"
+      />
+    </svg>
+
+    <!-- Application header icon -->
+    <img src="./img/zavax-icon.png" class="header-icon ds-icon" />
+
+    <div class="main-container">
+      <img src="./img/help-icon.svg" class="help-icon mb-circle-icon" id="mbHelpButton" />
+
+      <!-- Title section -->
+      <div class="title-container">
+        <span class="label-title-transaction">Transaction Status</span>
+        <img src="./img/help-icon.svg" class="help-icon ds-circle-icon" id="dsHelpButton" />
+        <img src="./img/zavax-icon.png" class="header-icon mb-icon" />
+      </div>
+
+      <!-- Transaction Bridge Status Section -->
+      <div class="transaction-bridge-status">
+        <div class="transaction-status">
+          <span class="transaction-label">
+            <img src="./img/iconcheck.svg" class="icon-check-transaction" />
+            Transaction Completed
+          </span>
+        </div>
+        <div class="transaction-status-message">
+          <span id="receivedMessage"></span>
+        </div>
+      </div>
+
+      <!-- Transaction Bridge Card Section -->
+      <div class="transaction-bridge-card">
+        <div class="transaction-item">
+          <span class="transaction-label">Sent:</span>
+          <span id="sentAmount">1.0000 ZEC</span>
+        </div>
+
+        <div class="network-info">
+          <div class="network">
+            <span>From</span>
+            <div id="fromNetwork" class="network-group">
+              <img src="./img/zcash.svg" class="icon-coin-md" />
+              <span>Zcash Network</span>
+            </div>
+          </div>
+          <div class="network">
+            <span>To</span>
+            <div id="toNetwork" class="network-group">
+              <img src="./img/avax.svg" class="icon-coin-md" />
+              <span>Avalanche Network</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="transaction-item">
+          <span class="transaction-label">Bridging Fee:</span>
+          <span>0.0100 ZEC</span>
+        </div>
+
+        <div class="receiving receiving-bg">
+          <span class="transaction-label">Received:</span>
+          <span id="receivedAmount">0.9900 ZEC.rbr</span>
+          <span class="transaction-label">Time Elapsed:</span>
+          <span>29:19</span>
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <button type="button" class="btn-again btn-lg" id="bridgeAgainButton">
+        Bridge Again
+      </button>
+    </div>
+    
+    <!-- Help popup overlay -->
+    <div class="popup-overlay" id="helpPopupOverlay">
+      <div class="popup-content-small">
+        <!-- Help message with information about red·bridge -->
+        <div class="popup-message">
+          In the production version, detailed help on using red·bridge, such as
+          topics on how to load your Zcash wallet and connect it, will appear
+          here.
+        </div>
+        <!-- Close button for the help popup -->
+        <button class="popup-button" id="helpPopupCloseButton">OK</button>
+      </div>
+    </div>
+  </body>
+</html>

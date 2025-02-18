@@ -1,0 +1,39 @@
+/* Basic default styles */
+
+@font-face {
+  font-family: "Segoe UI";
+  src: url("../fonts/Segoe.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Segoe UI";
+  src: url("../fonts/segoe-ui-semibold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  background: #fb4149 0% 0% no-repeat padding-box;
+  opacity: 1;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Segoe UI", sans-serif;
+  font-weight: 400;
+}
+
+a {
+  text-decoration: none;
+}

@@ -1,0 +1,72 @@
+/* Images and Icons */
+
+.header-icon {
+  height: 6.5rem;
+}
+
+.ds-icon {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+}
+
+.mb-icon,
+.mb-circle-icon {
+  display: none;
+}
+
+.icon-coin-sm {
+  height: 1.5rem;
+}
+
+.icon-coin-md {
+  height: 2.5rem;
+}
+
+.icon-avax-md {
+  width: 35px;
+  height: 35px;
+}
+
+.currency-icon-circle {
+  margin-right: 0.8rem;
+}
+
+.arrows {
+  height: 1.6rem;
+}
+.icon-coin-sm {
+  height: 1.5rem;
+}
+
+.icon-coin-md {
+  height: 2.5rem;
+}
+
+.icon-avax-md {
+  width: 35px;
+  height: 35px;
+}
+
+.currency-icon-circle {
+  margin-right: 0.8rem;
+}
+
+.arrows {
+  height: 1.6rem;
+}
+
+.help-icon {
+  cursor: pointer;
+  height: 1.6rem;
+}
+
+.icon-check-transaction {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+.dropdown-arrow {
+  height: 0.5rem;
+}
