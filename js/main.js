@@ -78,7 +78,6 @@ function setupEventListeners() {
 
 // Function to update the initial max balance for Zcash and Avalanche
 function updateInitialMaxBalance() {
-
   // Check if AvailableZcash is not already stored in sessionStorage
   if (!sessionStorage.getItem("AvailableZcash")) {
     // If not, set AvailableZcash to the current Zcash balance from CURRENCIES object
@@ -99,6 +98,20 @@ function updateInitialMaxBalance() {
   document.getElementById("availableBalanceAmount").textContent = availableZcash
     ? parseFloat(availableZcash).toFixed(4)
     : CURRENCIES.ZCASH.balance.toFixed(4);
+
+  const sendAmountInput = document.getElementById("sendAmount").value;
+  console.log(sendAmountInput);
+  if (availableZcash && parseFloat(availableZcash) === 0) {
+    setContinueButtonState(true);
+  } else if (
+    availableZcash &&
+    parseFloat(sendAmountInput) > parseFloat(availableZcash)
+  ) {
+    console.log("call");
+    setContinueButtonState(true);
+  } else {
+    setContinueButtonState(false);
+  }
 }
 
 // Function to set the state of the continue button (disabled or enabled)
@@ -111,7 +124,6 @@ function setContinueButtonState(isDisabled) {
 
 // Function to update the send/receive amount based on the input type
 function updateAmount(inputType) {
-
   // Get elements related to currency names and input fields
   const fromCurrencyName = document.querySelector("#fromCurrencyName");
   const toCurrencyName = document.querySelector("#toCurrencyName");
@@ -143,6 +155,7 @@ function updateAmount(inputType) {
     currencyName[0].style.color = "#c0c0c0";
     currencyName[1].style.color = "#c0c0c0";
     outputElement.value = "";
+    setContinueButtonState(true)
     return;
   }
 
@@ -152,7 +165,6 @@ function updateAmount(inputType) {
 
   // If input value is a valid number, proceed with the calculation
   if (!isNaN(inputValue)) {
-
     // If the input is "send" and the value is negative, reset it to 0
     if (inputType === "send" && inputValue < 0) {
       inputElement.value = "0";
@@ -170,8 +182,12 @@ function updateAmount(inputType) {
 
       // Determine the maximum allowable amount for the transaction (Zcash or Avalanche)
       const maxAmount = isZcash
-        ? availableZcash ? availableZcash : CURRENCIES.ZCASH.balance
-        : availableAvalanche ? availableAvalanche : CURRENCIES.AVALANCHE.balance;
+        ? availableZcash
+          ? availableZcash
+          : CURRENCIES.ZCASH.balance
+        : availableAvalanche
+        ? availableAvalanche
+        : CURRENCIES.AVALANCHE.balance;
 
       // Check if the input value exceeds the available balance
       const isExceedingLimit = inputValue > maxAmount;
@@ -199,7 +215,8 @@ function blockNegative(event) {
 // Function to update the maximum balance in the send amount field
 function updateMaxBalance() {
   const sendAmount = document.getElementById("sendAmount");
-  const fromCurrencyName = document.querySelector("#fromCurrencyName")?.textContent;
+  const fromCurrencyName =
+    document.querySelector("#fromCurrencyName")?.textContent;
 
   // Retrieve the available Zcash and Avalanche balances from sessionStorage
   const availableZcash = sessionStorage.getItem("AvailableZcash");
@@ -208,9 +225,13 @@ function updateMaxBalance() {
   const isZcash = fromCurrencyName === CURRENCIES.ZCASH.symbol;
 
   sendAmount.value = isZcash
-    ? availableZcash ? parseFloat(availableZcash).toFixed(4) : CURRENCIES.ZCASH.balance.toFixed(4)
-    : availableAvalanche ? parseFloat(availableAvalanche).toFixed(4) : CURRENCIES.AVALANCHE.balance.toFixed(4);
-  
+    ? availableZcash
+      ? parseFloat(availableZcash).toFixed(4)
+      : CURRENCIES.ZCASH.balance.toFixed(4)
+    : availableAvalanche
+    ? parseFloat(availableAvalanche).toFixed(4)
+    : CURRENCIES.AVALANCHE.balance.toFixed(4);
+
   // Call the updateAmount function to update the corresponding output field
   updateAmount("send");
 }
@@ -229,8 +250,13 @@ function swapCurrencies() {
     availableBalanceText: document.querySelector("#availableBalanceText"),
     receiveAmountNode: document.getElementById("receiveAmount"),
     sendAmountNode: document.getElementById("sendAmount"),
-    availableZcash: sessionStorage.getItem("AvailableZcash") ? sessionStorage.getItem("AvailableZcash") : CURRENCIES.ZCASH.balance,
-    availableAvalanche: sessionStorage.getItem("AvailableAvalanche") ? sessionStorage.getItem("AvailableAvalanche") : CURRENCIES.AVALANCHE.balance,
+    currencyName: document.getElementsByClassName("currency-name"),
+    availableZcash: sessionStorage.getItem("AvailableZcash")
+      ? sessionStorage.getItem("AvailableZcash")
+      : CURRENCIES.ZCASH.balance,
+    availableAvalanche: sessionStorage.getItem("AvailableAvalanche")
+      ? sessionStorage.getItem("AvailableAvalanche")
+      : CURRENCIES.AVALANCHE.balance,
   };
 
   elements.sendAmountNode.value = DEFAULT_AMOUNT.toFixed(4);
@@ -263,12 +289,28 @@ function swapCurrencies() {
   elements.fromCurrencyName.textContent = fromCurrency.symbol;
   elements.toCurrencyName.textContent = toCurrency.symbol;
 
+  // Change currency name colors to active state when input is not empty
+  elements.currencyName[0].style.color = "#6e6e6e";
+  elements.currencyName[1].style.color = "#6e6e6e";
+
   // Update the available balance amount and text based on the "from" currency
   elements.availableBalanceAmount.textContent =
     fromCurrency.symbol === CURRENCIES.AVALANCHE.symbol
       ? parseFloat(elements.availableAvalanche).toFixed(4)
       : parseFloat(elements.availableZcash).toFixed(4);
+
   elements.availableBalanceText.textContent = fromCurrency.symbol;
+
+  if (parseFloat(elements.availableBalanceAmount.textContent) === 0) {
+    setContinueButtonState(true);
+  } else if (
+    parseFloat(elements.sendAmountNode.value) >
+    parseFloat(elements.availableBalanceAmount.textContent)
+  ) {
+    setContinueButtonState(true);
+  } else {
+    setContinueButtonState(false);
+  }
 
   // Set the receive amount based on the default amount and the bridging fee
   elements.receiveAmountNode.value = (DEFAULT_AMOUNT - BRIDGING_FEE).toFixed(4);
@@ -353,16 +395,24 @@ function redirectToTransaction() {
     return alert("Please enter a valid amount.");
 
   // Retrieve the previous available balance for both Zcash and Avalanche from sessionStorage (or use default balance)
-  const prevAvailableZcash = sessionStorage.getItem("AvailableZcash") ? sessionStorage.getItem("AvailableZcash") : CURRENCIES.ZCASH.balance;
-  const prevAvailableAvalanche = sessionStorage.getItem("AvailableAvalanche") ? sessionStorage.getItem("AvailableAvalanche") : CURRENCIES.AVALANCHE.balance;
-  
+  const prevAvailableZcash = sessionStorage.getItem("AvailableZcash")
+    ? sessionStorage.getItem("AvailableZcash")
+    : CURRENCIES.ZCASH.balance;
+  const prevAvailableAvalanche = sessionStorage.getItem("AvailableAvalanche")
+    ? sessionStorage.getItem("AvailableAvalanche")
+    : CURRENCIES.AVALANCHE.balance;
+
   // Check if the sending currency is Zcash, and update the sessionStorage accordingly
   if (sendingCurrency === CURRENCIES.ZCASH.symbol) {
-    
-    sessionStorage.setItem("AvailableZcash", parseFloat(prevAvailableZcash) - parseFloat(sendAmount));
-    sessionStorage.setItem("AvailableAvalanche", parseFloat(prevAvailableAvalanche) + parseFloat(receiveAmount));
+    sessionStorage.setItem(
+      "AvailableZcash",
+      parseFloat(prevAvailableZcash) - parseFloat(sendAmount)
+    );
+    sessionStorage.setItem(
+      "AvailableAvalanche",
+      parseFloat(prevAvailableAvalanche) + parseFloat(receiveAmount)
+    );
   } else {
-    
     sessionStorage.setItem(
       "AvailableAvalanche",
       parseFloat(prevAvailableAvalanche) - parseFloat(sendAmount)

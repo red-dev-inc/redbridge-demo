@@ -1,5 +1,17 @@
 // Import constants
-import { DEFAULT_AMOUNT, CURRENCIES, BRIDGING_FEE } from "../utils/constants.js";
+import {
+  DEFAULT_AMOUNT,
+  CURRENCIES,
+  BRIDGING_FEE,
+} from "../utils/constants.js";
+
+// Function to set the state of the continue button (disabled or enabled)
+function setContinueButtonState(isDisabled) {
+  const continueButton = document.getElementById("continueButton");
+  continueButton.disabled = isDisabled;
+  continueButton.style.opacity = isDisabled ? "40%" : "100%";
+  continueButton.style.cursor = isDisabled ? "not-allowed" : "pointer";
+}
 
 // Update the dropdown
 document.querySelectorAll(".custom-select").forEach((select) => {
@@ -15,12 +27,17 @@ document.querySelectorAll(".custom-select").forEach((select) => {
     fromCurrencyName: document.querySelector("#fromCurrencyName"),
     toAmountIcon: document.querySelector("#toAmountIcon"),
     toCurrencyName: document.querySelector("#toCurrencyName"),
+    currencyName: document.getElementsByClassName("currency-name"),
     availableBalanceAmount: document.querySelector("#availableBalanceAmount"),
     availableBalanceText: document.querySelector("#availableBalanceText"),
     receiveAmountNode: document.getElementById("receiveAmount"),
     sendAmountNode: document.getElementById("sendAmount"),
-    availableZcash: sessionStorage.getItem("AvailableZcash") ? sessionStorage.getItem("AvailableZcash") : CURRENCIES.ZCASH.balance,
-    availableAvalanche: sessionStorage.getItem("AvailableAvalanche") ? sessionStorage.getItem("AvailableAvalanche") : CURRENCIES.AVALANCHE.balance,
+    availableZcash: sessionStorage.getItem("AvailableZcash")
+      ? sessionStorage.getItem("AvailableZcash")
+      : CURRENCIES.ZCASH.balance,
+    availableAvalanche: sessionStorage.getItem("AvailableAvalanche")
+      ? sessionStorage.getItem("AvailableAvalanche")
+      : CURRENCIES.AVALANCHE.balance,
   };
 
   // Toggle dropdown visibility
@@ -28,13 +45,27 @@ document.querySelectorAll(".custom-select").forEach((select) => {
 
   // Function to update UI for currency selection
   function updateCurrencyUI(selectedCurrency, isFromOption) {
-    const { fromCurrencyGroup, toCurrencyGroup, fromAmountIcon, fromCurrencyName, 
-            toAmountIcon, toCurrencyName, availableBalanceAmount, 
-            availableBalanceText, receiveAmountNode, sendAmountNode } = elements;
+    const {
+      fromCurrencyGroup,
+      toCurrencyGroup,
+      fromAmountIcon,
+      fromCurrencyName,
+      toAmountIcon,
+      toCurrencyName,
+      currencyName,
+      availableBalanceAmount,
+      availableBalanceText,
+      receiveAmountNode,
+      sendAmountNode,
+    } = elements;
 
     const isZcash = selectedCurrency === CURRENCIES.ZCASH.name;
-    const selectedCurrencyDetails = isZcash ? CURRENCIES.ZCASH : CURRENCIES.AVALANCHE;
-    const oppositeCurrencyDetails = isZcash ? CURRENCIES.AVALANCHE : CURRENCIES.ZCASH;
+    const selectedCurrencyDetails = isZcash
+      ? CURRENCIES.ZCASH
+      : CURRENCIES.AVALANCHE;
+    const oppositeCurrencyDetails = isZcash
+      ? CURRENCIES.AVALANCHE
+      : CURRENCIES.ZCASH;
 
     // Set selected currency UI
     if (isFromOption) {
@@ -44,7 +75,10 @@ document.querySelectorAll(".custom-select").forEach((select) => {
       toAmountIcon.src = createIconHTML(oppositeCurrencyDetails.icon);
       fromCurrencyName.textContent = selectedCurrencyDetails.symbol;
       toCurrencyName.textContent = oppositeCurrencyDetails.symbol;
-      availableBalanceAmount.textContent = selectedCurrencyDetails.symbol === CURRENCIES.ZCASH.symbol ? parseFloat(elements.availableZcash).toFixed(4) : parseFloat(elements.availableAvalanche).toFixed(4);
+      availableBalanceAmount.textContent =
+        selectedCurrencyDetails.symbol === CURRENCIES.ZCASH.symbol
+          ? parseFloat(elements.availableZcash).toFixed(4)
+          : parseFloat(elements.availableAvalanche).toFixed(4);
       availableBalanceText.textContent = selectedCurrencyDetails.symbol;
     } else {
       toCurrencyGroup.innerHTML = createCurrencyHTML(selectedCurrencyDetails);
@@ -53,10 +87,28 @@ document.querySelectorAll(".custom-select").forEach((select) => {
       toAmountIcon.src = createIconHTML(selectedCurrencyDetails.icon);
       fromCurrencyName.textContent = oppositeCurrencyDetails.symbol;
       toCurrencyName.textContent = selectedCurrencyDetails.symbol;
-      availableBalanceAmount.textContent = oppositeCurrencyDetails.symbol === CURRENCIES.ZCASH.symbol ? parseFloat(elements.availableZcash).toFixed(4) : parseFloat(elements.availableAvalanche).toFixed(4);
+      availableBalanceAmount.textContent =
+        oppositeCurrencyDetails.symbol === CURRENCIES.ZCASH.symbol
+          ? parseFloat(elements.availableZcash).toFixed(4)
+          : parseFloat(elements.availableAvalanche).toFixed(4);
       availableBalanceText.textContent = oppositeCurrencyDetails.symbol;
     }
-    
+
+    // Change currency name colors to active state when input is not empty
+    elements.currencyName[0].style.color = "#6e6e6e";
+    elements.currencyName[1].style.color = "#6e6e6e";
+
+    if (parseFloat(availableBalanceAmount.textContent) === 0) {
+      setContinueButtonState(true);
+    } else if (
+      parseFloat(elements.sendAmountNode.value) >
+      parseFloat(availableBalanceAmount.textContent)
+    ) {
+      setContinueButtonState(true);
+    } else {
+      setContinueButtonState(false);
+    }
+
     sendAmountNode.value = DEFAULT_AMOUNT.toFixed(4);
     receiveAmountNode.value = (DEFAULT_AMOUNT - BRIDGING_FEE).toFixed(4);
   }
@@ -99,14 +151,14 @@ document.querySelectorAll(".custom-select").forEach((select) => {
 
   nodeOptions.forEach((option) => {
     option.addEventListener("click", (e) => {
-        let value = e.target.textContent.trim();
-        if (window.innerWidth < 1200 && value.length >= 35) {
-            value = `${value.slice(0, 6)}...${value.slice(-4)}`;
-        }
-        trigger.querySelector("span").textContent = value;
-        select.classList.remove("open");
+      let value = e.target.textContent.trim();
+      if (window.innerWidth < 1200 && value.length >= 35) {
+        value = `${value.slice(0, 6)}...${value.slice(-4)}`;
+      }
+      trigger.querySelector("span").textContent = value;
+      select.classList.remove("open");
     });
-});
+  });
 
   // Close dropdown if clicked outside
   document.addEventListener("click", (e) => {
