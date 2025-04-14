@@ -19,6 +19,14 @@
   .mb-circle-icon {
     display: inline-block;
   }
+
+  .ds-switch{
+    display: none;
+  }
+
+  .mb-switch {
+    display: inline-block;
+  }
   .help-icon {
     height: 1.8rem;
   }

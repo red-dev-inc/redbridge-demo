@@ -13,6 +13,12 @@
     <link rel="stylesheet" href="./css/index.css" />
 
     <!-- Importing JavaScript modules -->
+    <script>
+      (function () {
+        const savedTheme = localStorage.getItem("theme") || "red";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+      })();
+    </script>
     <script type="module" src="./js/main.js"></script>
     <script type="module" src="./js/select.js"></script>
     <script type="module" src="./js/transactionInput.js"></script>
@@ -42,8 +48,8 @@
           y2="-0.124"
           gradientUnits="objectBoundingBox"
         >
-          <stop offset="0" stop-color="#ef1a1a" />
-          <stop offset="1" stop-color="#780d0d" stop-opacity="0.741" />
+          <stop id="gradientLeftStop1" offset="0" stop-color="#ef1a1a" />
+          <stop id="gradientLeftStop2" offset="1" stop-color="#780d0d" stop-opacity="0.741" />
         </linearGradient>
       </defs>
       <path
@@ -80,8 +86,8 @@
           y2="0.244"
           gradientUnits="objectBoundingBox"
         >
-          <stop offset="0" stop-color="#ef1a1a" />
-          <stop offset="1" stop-color="#780d0d" />
+          <stop id="gradientBottomStop1" offset="0" stop-color="#ef1a1a" />
+          <stop id="gradientBottomStop2" offset="1" stop-color="#780d0d" />
         </linearGradient>
       </defs>
       <path
@@ -99,20 +105,40 @@
 
     <div class="main-container">
       <!-- Help icon button -->
-      <img
-        src="./img/help-icon.svg"
-        class="help-icon mb-circle-icon"
-        id="mbHelpButton"
-      />
+      <div class="help-icons-group">
+        <div class="tooltip">
+          <div id="mbSwitchMode" class="mode-switch mb-switch"></div>
+          <div id="mbThemeInfo" class="tooltiptext">Dark Mode</div>
+        </div>
+
+        <div class="tooltip">
+          <img
+            src="./img/help_icon.svg"
+            class="help-icon mb-circle-icon"
+            id="mbHelpButton"
+          />
+          <div class="tooltiptext">Help</div>
+        </div>
+      </div>
 
       <!-- Title section -->
       <div class="title-container">
         <span class="label-title-transaction">Confirm Transaction</span>
-        <img
-          src="./img/help-icon.svg"
-          class="help-icon ds-circle-icon"
-          id="dsHelpButton"
-        />
+        <div class="help-icons-group">
+          <div class="tooltip">
+            <div id="dsSwitchMode" class="mode-switch ds-switch"></div>
+            <span id="dsThemeInfo" class="tooltiptext">Dark Mode</span>
+          </div>
+          
+          <div class="tooltip">
+            <img
+              src="./img/help_icon.svg"
+              class="help-icon ds-circle-icon"
+              id="dsHelpButton"
+            />
+            <div id="helpInfo" class="tooltiptext">Help</div>
+          </div>
+        </div>
         <img
           src="./img/zavax-icon.png"
           class="header-icon mb-icon"
@@ -132,14 +158,14 @@
           <div class="network">
             <span>From</span>
             <div id="fromNetwork" class="network-group">
-              <img src="./img/zcash.svg" class="icon-coin-md" />
+              <img src="./img/zcash.svg" id="fromNetworkIcon" class="icon-coin-md" />
               <span>Zcash Network</span>
             </div>
           </div>
           <div class="network">
             <span>To</span>
             <div id="toNetwork" class="network-group">
-              <img src="./img/avax.svg" class="icon-coin-md" />
+              <img src="./img/avax.svg" id="toNetworkIcon" class="icon-coin-md" />
               <span>Avalanche Network</span>
             </div>
           </div>
@@ -216,7 +242,7 @@
 
         <!-- Close button for the popup -->
         <div class="popup-close" id="progressPopupCloseButton">
-          <img src="./img/cancel_icon.svg" class="popup-close-icon" />
+          <img id="cancelIcon" src="./img/cancel_icon.svg" class="popup-close-icon" />
         </div>
       </div>
     </div>

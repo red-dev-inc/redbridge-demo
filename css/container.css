@@ -17,15 +17,20 @@
   margin-bottom: 1rem;
 }
 
+.help-icons-group {
+  display: flex;
+  gap: 1rem;
+}
+
 .bridge-card,
 .transaction-bridge-card,
 .transaction-bridge-status {
-  color: #ebe4e4;
-  background-color: #e92f38ae;
-  border: 3px solid #ffffffbf;
+  color: var(--primary-text-color);
+  background-color: var(--card-bg);
+  border: 3px solid var(--card-border-color);
   border-radius: 1rem;
-  backdrop-filter: blur(7px);
-  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(11px);
+  -webkit-backdrop-filter: blur(11px);
 }
 
 .bridge-card {

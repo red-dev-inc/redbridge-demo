@@ -1,7 +1,7 @@
 /* Text styles */
 .label-title-transaction {
   font-size: 1.8rem;
-  color: #fff;
+  color: var(--primary-text-color);
   font-weight: 600;
 }
 
@@ -16,7 +16,7 @@
 
 .currency-label {
   font-size: 1.4rem;
-  color: #ffffff;
+  color: var(--primary-text-color);
   margin-right: 0.5rem;
 }
 
@@ -33,7 +33,7 @@
 .balance-text {
   font-size: 0.8rem;
   font-style: italic;
-  color: #ffffff;
+  color: var(--primary-text-color);
   position: absolute;
   top: calc(100% + 0.5rem);
   right: 8px;
@@ -42,7 +42,7 @@
 .max-text {
   font-size: 0.8rem;
   font-weight: bold;
-  color: #ffffff;
+  color: var(--primary-text-color);
   position: absolute;
   top: calc(100% + 0.5rem);
   left: 8px;
@@ -52,13 +52,13 @@
 .transaction-status {
   font-size: 1.2rem;
   font-weight: 400;
-  color: #fff;
+  color: var(--primary-text-color);
   margin-bottom: 0.8rem;
 }
 
 .transaction-status-message {
   font-size: 1.4rem;
-  color: #fff;
+  color: var(--primary-text-color);
   font-weight: normal;
 }
 
@@ -75,7 +75,7 @@
   align-items: center;
   font-size: 1.3rem;
   gap: 1rem;
-  color: #ffffff;
+  color: var(--primary-text-color);
   margin: 0 3rem 3rem;
 }
 
@@ -96,7 +96,7 @@
   align-items: center;
   margin: 0 3rem 3rem;
   font-size: 1.3rem;
-  color: white;
+  color: var(--primary-text-color);
 }
 
 .network {
@@ -122,13 +122,55 @@
   font-weight: bold;
   border-bottom-left-radius: inherit;
   border-bottom-right-radius: inherit;
-  background-color: rgb(255, 255, 255, 0.1);
-  backdrop-filter: blur(30px) brightness(1.2) opacity(0.17);
-  -webkit-backdrop-filter: blur(30px) brightness(1.2) opacity(0.17);
+  background-color: var(--glow-bg-color);
+  backdrop-filter: blur(8px); /* frosted glass effect */
+  box-shadow: 
+        inset 0px 8px 30px -30px var(--glow-bg-shadow-color),
+        inset 0px -8px 30px -10px var(--glow-bg-shadow-color);
+  /* opacity: 0.3; */
   font-size: 1.3rem;
 }
 
 .blur-background {
   filter: blur(5px);
   transition: filter 0.3s ease;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: var(--tooltip-bg);
+  border: 1px solid var(--mode-tooltip-color);
+  color: var(--mode-tooltip-color);
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 150%;
+  left: 50%;
+  margin-left: -60px;
+}
+
+.tooltip .tooltiptext::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background: var(--tooltip-bg);
+  border-left: 1px solid var(--mode-tooltip-color);
+  border-bottom: 1px solid var(--mode-tooltip-color);
+  transform: translateX(-50%) rotate(-45deg);
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
 }

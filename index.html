@@ -6,6 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>red·bridge Demo</title>
 
+    <!-- Open Graph Meta Tags (For Facebook, LinkedIn, etc.) -->
+    <meta property="og:title" content="red·bridge Demo" />
+    <meta property="og:description" content="red·bridge Demo" />
+    <meta
+      property="og:image"
+      content="https://redbridge-demo.red.dev/assets/Redbridge-Logo.png"
+    />
+    <meta property="og:url" content="https://redbridge-demo.red.dev/" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="red·bridge Demo" />
+    <meta name="twitter:description" content="red·bridge Demo" />
+    <meta
+      name="twitter:image"
+      content="https://redbridge-demo.red.dev/assets/Redbridge-Logo.png"
+    />
+    <meta name="twitter:url" content="https://redbridge-demo.red.dev/" />
+
     <!-- Favicon for the webpage -->
     <link rel="icon" type="image/x-icon" href="/img/zavax-icon.png" />
 
@@ -13,12 +33,19 @@
     <link rel="stylesheet" href="./css/index.css" />
 
     <!-- Importing JavaScript modules -->
+    <script>
+      (function () {
+        const savedTheme = localStorage.getItem("theme") || "red";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+      })();
+    </script>
     <script type="module" src="./js/main.js"></script>
+    
     <script type="module" src="./js/select.js"></script>
   </head>
 
   <body>
-    <!-- Right background SVG -->
+    <!-- Left background SVG -->
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -41,8 +68,13 @@
           y2="-0.124"
           gradientUnits="objectBoundingBox"
         >
-          <stop offset="0" stop-color="#ef1a1a" />
-          <stop offset="1" stop-color="#780d0d" stop-opacity="0.741" />
+          <stop id="gradientLeftStop1" offset="0" stop-color="#ef1a1a" />
+          <stop
+            id="gradientLeftStop2"
+            offset="1"
+            stop-color="#780d0d"
+            stop-opacity="0.741"
+          />
         </linearGradient>
       </defs>
       <path
@@ -79,8 +111,8 @@
           y2="0.244"
           gradientUnits="objectBoundingBox"
         >
-          <stop offset="0" stop-color="#ef1a1a" />
-          <stop offset="1" stop-color="#780d0d" />
+          <stop id="gradientBottomStop1" offset="0" stop-color="#ef1a1a" />
+          <stop id="gradientBottomStop2" offset="1" stop-color="#780d0d" />
         </linearGradient>
       </defs>
       <path
@@ -98,20 +130,42 @@
 
     <div class="main-container">
       <!-- Help icon button -->
-      <img
-        src="./img/help-icon.svg"
-        class="help-icon mb-circle-icon"
-        id="mbHelpButton"
-      />
+
+      <div class="help-icons-group">
+        <div class="tooltip">
+          <div id="mbSwitchMode" class="mode-switch mb-switch"></div>
+          <div id="mbThemeInfo" class="tooltiptext">Dark Mode</div>
+        </div>
+
+        <div class="tooltip">
+          <img
+            src="./img/help_icon.svg"
+            class="help-icon mb-circle-icon"
+            id="mbHelpButton"
+          />
+          <div class="tooltiptext">Help</div>
+        </div>
+      </div>
 
       <!-- Title section -->
       <div class="title-container">
         <span class="label-title-transaction main-title">red·bridge</span>
-        <img
-          src="./img/help-icon.svg"
-          class="help-icon ds-circle-icon"
-          id="dsHelpButton"
-        />
+        <div class="help-icons-group">
+          <div class="tooltip">
+            <div id="dsSwitchMode" class="mode-switch ds-switch"></div>
+            <div id="dsThemeInfo" class="tooltiptext">Dark Mode</div>
+          </div>
+
+          <div class="tooltip">
+            <img
+              src="./img/help_icon.svg"
+              class="help-icon ds-circle-icon"
+              id="dsHelpButton"
+            />
+            <div id="helpInfo" class="tooltiptext">Help</div>
+          </div>
+        </div>
+
         <img src="./img/zavax-icon.png" class="header-icon mb-icon" />
       </div>
 
@@ -129,7 +183,11 @@
                 />
                 Zcash
               </div>
-              <img src="./img/chevron-down.svg" class="dropdown-arrow" />
+              <img
+                src="./img/chevron-down.svg"
+                id="chevronIcon"
+                class="dropdown-arrow"
+              />
             </div>
             <div class="custom-options" id="fromOptions">
               <div
@@ -150,7 +208,7 @@
               >
                 <img
                   src="./img/avax.svg"
-                  class="icon-coin-sm currency-icon-circle"
+                  class="icon-coin-sm currency-icon-circle avax-currency"
                 />
                 Avalanche
               </div>
@@ -161,7 +219,7 @@
 
           <!-- Swap Button (Arrows) for Mobile -->
           <div class="arrow-section mb-arrow" id="mbSwapButton">
-            <img class="arrows" src="./img/arrows.svg" />
+            <img id="mbSwapIcon" class="arrows" src="./img/arrows.svg" />
           </div>
 
           <!-- To Currency Selector -->
@@ -175,7 +233,11 @@
                 />
                 Avalanche
               </div>
-              <img src="./img/chevron-down.svg" class="dropdown-arrow" />
+              <img
+                src="./img/chevron-down.svg"
+                id="chevronIcon"
+                class="dropdown-arrow"
+              />
             </div>
             <div class="custom-options" id="toOptions">
               <div
@@ -196,7 +258,7 @@
               >
                 <img
                   src="./img/avax.svg"
-                  class="icon-coin-sm currency-icon-circle"
+                  class="icon-coin-sm currency-icon-circle avax-currency"
                 />
                 Avalanche
               </div>
@@ -206,7 +268,7 @@
 
         <!-- Swap Button (Arrows) for Desktop -->
         <div class="arrow-section ds-arrow" id="dsSwapButton">
-          <img class="arrows" src="./img/arrows.svg" />
+          <img id="dsSwapIcon" class="arrows" src="./img/arrows.svg" />
         </div>
 
         <!-- Amount Input Section -->

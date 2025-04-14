@@ -5,6 +5,9 @@ import {
   BRIDGING_FEE,
 } from "../utils/constants.js";
 
+let currentTheme = localStorage.getItem("theme") || "red";
+
+
 // Function to set the state of the continue button (disabled or enabled)
 function setContinueButtonState(isDisabled) {
   const continueButton = document.getElementById("continueButton");
@@ -41,7 +44,10 @@ document.querySelectorAll(".custom-select").forEach((select) => {
   };
 
   // Toggle dropdown visibility
-  trigger.addEventListener("click", () => select.classList.toggle("open"));
+  trigger.addEventListener("click", () => {
+    select.classList.toggle("open");
+    currentTheme = localStorage.getItem("theme") || "red";
+  });
 
   // Function to update UI for currency selection
   function updateCurrencyUI(selectedCurrency, isFromOption) {
@@ -71,8 +77,8 @@ document.querySelectorAll(".custom-select").forEach((select) => {
     if (isFromOption) {
       fromCurrencyGroup.innerHTML = createCurrencyHTML(selectedCurrencyDetails);
       toCurrencyGroup.innerHTML = createCurrencyHTML(oppositeCurrencyDetails);
-      fromAmountIcon.src = createIconHTML(selectedCurrencyDetails.icon);
-      toAmountIcon.src = createIconHTML(oppositeCurrencyDetails.icon);
+      fromAmountIcon.src = createIconHTML(selectedCurrencyDetails.getIcon(currentTheme));
+      toAmountIcon.src = createIconHTML(oppositeCurrencyDetails.getIcon(currentTheme));
       fromCurrencyName.textContent = selectedCurrencyDetails.symbol;
       toCurrencyName.textContent = oppositeCurrencyDetails.symbol;
       availableBalanceAmount.textContent =
@@ -83,8 +89,8 @@ document.querySelectorAll(".custom-select").forEach((select) => {
     } else {
       toCurrencyGroup.innerHTML = createCurrencyHTML(selectedCurrencyDetails);
       fromCurrencyGroup.innerHTML = createCurrencyHTML(oppositeCurrencyDetails);
-      fromAmountIcon.src = createIconHTML(oppositeCurrencyDetails.icon);
-      toAmountIcon.src = createIconHTML(selectedCurrencyDetails.icon);
+      fromAmountIcon.src = createIconHTML(oppositeCurrencyDetails.getIcon(currentTheme));
+      toAmountIcon.src = createIconHTML(selectedCurrencyDetails.getIcon(currentTheme));
       fromCurrencyName.textContent = oppositeCurrencyDetails.symbol;
       toCurrencyName.textContent = selectedCurrencyDetails.symbol;
       availableBalanceAmount.textContent =
@@ -116,7 +122,7 @@ document.querySelectorAll(".custom-select").forEach((select) => {
   // Create HTML for currency display
   function createCurrencyHTML(currency) {
     return `
-      <img src="./img/${currency.icon}" class="icon-coin-sm currency-icon-circle" />
+      <img src="./img/${currency.getIcon(currentTheme)}" class="icon-coin-sm currency-icon-circle" />
       ${currency.name}
     `;
   }

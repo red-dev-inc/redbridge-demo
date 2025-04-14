@@ -3,11 +3,23 @@ import {
   DEFAULT_AMOUNT,
   CURRENCIES,
   BRIDGING_FEE,
+  THEMES
 } from "../utils/constants.js";
+
+import {
+  getCurrentTheme,
+  getNextThemes,
+  updateThemeTooltip,
+  setTheme
+} from './themeManager.js';
 
 // Wait for the DOM to be fully loaded before executing scripts
 document.addEventListener("DOMContentLoaded", () => {
   setupEventListeners();
+  const savedTheme = localStorage.getItem("theme") || "red";
+  setTheme(savedTheme);
+  const { next, preview } = getNextThemes(savedTheme);
+  updateThemeTooltip(next)
   setTimeout(() => {
     updateInitialMaxBalance();
   }, 100);
@@ -76,6 +88,20 @@ function setupEventListeners() {
   receiveAmount?.addEventListener("keydown", blockNegative);
 }
 
+document.querySelector('#dsSwitchMode').addEventListener('click', () => {
+  const current = getCurrentTheme() || 'red';
+  const { next, preview } = getNextThemes(current);
+  setTheme(next);
+  updateThemeTooltip(preview);
+});
+
+document.querySelector('#mbSwitchMode').addEventListener('click', () => {
+  const current = getCurrentTheme() || 'red';
+  const { next, preview } = getNextThemes(current);
+  setTheme(next);
+  updateThemeTooltip(preview);
+});
+
 // Function to update the initial max balance for Zcash and Avalanche
 function updateInitialMaxBalance() {
   // Check if AvailableZcash is not already stored in sessionStorage
@@ -95,19 +121,19 @@ function updateInitialMaxBalance() {
 
   // Update the displayed available balance in the UI with the retrieved value
   // If AvailableZcash is found, display it rounded to 4 decimal places; otherwise, use the current balance from CURRENCIES
-  document.getElementById("availableBalanceAmount").textContent = availableZcash
+  let availableBalanceAmount = document.getElementById("availableBalanceAmount");
+  if(availableBalanceAmount)
+    availableBalanceAmount.textContent = availableZcash
     ? parseFloat(availableZcash).toFixed(4)
     : CURRENCIES.ZCASH.balance.toFixed(4);
 
-  const sendAmountInput = document.getElementById("sendAmount").value;
-  console.log(sendAmountInput);
+  const sendAmountInput = document.getElementById("sendAmount")?.value;
   if (availableZcash && parseFloat(availableZcash) === 0) {
     setContinueButtonState(true);
   } else if (
     availableZcash &&
     parseFloat(sendAmountInput) > parseFloat(availableZcash)
   ) {
-    console.log("call");
     setContinueButtonState(true);
   } else {
     setContinueButtonState(false);
@@ -117,9 +143,11 @@ function updateInitialMaxBalance() {
 // Function to set the state of the continue button (disabled or enabled)
 function setContinueButtonState(isDisabled) {
   const continueButton = document.getElementById("continueButton");
+  if(continueButton) {
   continueButton.disabled = isDisabled;
   continueButton.style.opacity = isDisabled ? "40%" : "100%";
   continueButton.style.cursor = isDisabled ? "not-allowed" : "pointer";
+  }
 }
 
 // Function to update the send/receive amount based on the input type
@@ -265,26 +293,26 @@ function swapCurrencies() {
   const isZcash =
     elements.fromCurrencyGroup.textContent.trim() === CURRENCIES.ZCASH.name;
 
+  const currentTheme = getCurrentTheme();
+  
   // Set the "from" and "to" currencies based on the selected "from" currency
   const fromCurrency = isZcash ? CURRENCIES.AVALANCHE : CURRENCIES.ZCASH;
   const toCurrency = isZcash ? CURRENCIES.ZCASH : CURRENCIES.AVALANCHE;
 
   // Update the "from" currency group with the new currency information (icon and name)
   elements.fromCurrencyGroup.innerHTML = `
-      <img src="./img/${fromCurrency.icon}" class="icon-coin-sm currency-icon-circle" />
+      <img src="./img/${fromCurrency.getIcon(currentTheme)}" class="icon-coin-sm currency-icon-circle" />
       ${fromCurrency.name}
     `;
-
+  elements.fromAmountIcon.src = `./img/${fromCurrency.getIcon(currentTheme)}`;
+  
   // Update the "to" currency group with the new currency information (icon and name)
   elements.toCurrencyGroup.innerHTML = ` 
-      <img src="./img/${toCurrency.icon}" class="icon-coin-sm currency-icon-circle" />
-      ${toCurrency.name}
-    `;
-
-  // Set the icons for the "from" and "to" amounts based on the selected currencies
-  elements.fromAmountIcon.src = `./img/${fromCurrency.icon}`;
-  elements.toAmountIcon.src = `./img/${toCurrency.icon}`;
-
+    <img src="./img/${toCurrency.getIcon(currentTheme)}" class="icon-coin-sm currency-icon-circle" />
+    ${toCurrency.name}
+  `;
+  elements.toAmountIcon.src = `./img/${toCurrency.getIcon(currentTheme)}`;
+  
   // Update the "from" and "to" currency symbols
   elements.fromCurrencyName.textContent = fromCurrency.symbol;
   elements.toCurrencyName.textContent = toCurrency.symbol;
@@ -336,8 +364,6 @@ function hidePopup() {
   stopProgress();
 }
 
-let progressInterval;
-
 function updateProgressElements(progress, opacity) {
   document.getElementById("progressText").textContent = `${progress}%`;
   document.getElementById("progressBarFill").style.width = `${progress}%`;
@@ -356,6 +382,8 @@ function updateProgressElements(progress, opacity) {
       : "The actual bridging time will be ~30 minutes for version 1.0 and much faster in future versions.";
 }
 
+let progressInterval;
+
 function startProgress() {
   let progress = 10; // Starting progress
   const totalTime = 12000; // 12 seconds
@@ -366,7 +394,6 @@ function startProgress() {
       progress += 1;
       updateProgressElements(progress, progress / 100);
     } else {
-      clearInterval(progressInterval);
       stopProgress();
       redirectToNextPage();
     }
@@ -374,7 +401,6 @@ function startProgress() {
 }
 
 function stopProgress() {
-  clearInterval(progressInterval);
   document.getElementById("progressText").textContent = "100%";
   document.getElementById("progressBarFill").style.width = "100%";
 }
@@ -453,3 +479,168 @@ function redirectTobeforePage() {
 function redirectToHome() {
   window.location.href = "index.html";
 }
+
+// Function to set the state of the continue button (disabled or enabled)
+// function setContinueButtonState(isDisabled) {
+//   const continueButton = document.getElementById("continueButton");
+//   continueButton.disabled = isDisabled;
+//   continueButton.style.opacity = isDisabled ? "40%" : "100%";
+//   continueButton.style.cursor = isDisabled ? "not-allowed" : "pointer";
+// }
+// const currentTheme = localStorage.getItem("theme") || "red";
+
+// Update the dropdown
+// document.querySelectorAll(".custom-select").forEach((select) => {
+  
+//   const trigger = select.querySelector(".custom-select-trigger");
+//   const fromOptions = select.querySelectorAll("#fromOptions");
+//   const toOptions = select.querySelectorAll("#toOptions");
+//   const nodeOptions = select.querySelectorAll("#nodeOptions");
+
+//   const elements = {
+//     fromCurrencyGroup: document.querySelector("#fromCurrencyGroup"),
+//     toCurrencyGroup: document.querySelector("#toCurrencyGroup"),
+//     fromAmountIcon: document.querySelector("#fromAmountIcon"),
+//     fromCurrencyName: document.querySelector("#fromCurrencyName"),
+//     toAmountIcon: document.querySelector("#toAmountIcon"),
+//     toCurrencyName: document.querySelector("#toCurrencyName"),
+//     currencyName: document.getElementsByClassName("currency-name"),
+//     availableBalanceAmount: document.querySelector("#availableBalanceAmount"),
+//     availableBalanceText: document.querySelector("#availableBalanceText"),
+//     receiveAmountNode: document.getElementById("receiveAmount"),
+//     sendAmountNode: document.getElementById("sendAmount"),
+//     availableZcash: sessionStorage.getItem("AvailableZcash")
+//       ? sessionStorage.getItem("AvailableZcash")
+//       : CURRENCIES.ZCASH.balance,
+//     availableAvalanche: sessionStorage.getItem("AvailableAvalanche")
+//       ? sessionStorage.getItem("AvailableAvalanche")
+//       : CURRENCIES.AVALANCHE.balance,
+//   };
+
+//   // Toggle dropdown visibility
+//   trigger.addEventListener("click", () => select.classList.toggle("open"));
+
+//   // Function to update UI for currency selection
+//   function updateCurrencyUI(selectedCurrency, isFromOption) {
+//     const {
+//       fromCurrencyGroup,
+//       toCurrencyGroup,
+//       fromAmountIcon,
+//       fromCurrencyName,
+//       toAmountIcon,
+//       toCurrencyName,
+//       currencyName,
+//       availableBalanceAmount,
+//       availableBalanceText,
+//       receiveAmountNode,
+//       sendAmountNode,
+//     } = elements;
+
+//     const isZcash = selectedCurrency === CURRENCIES.ZCASH.name;
+//     const selectedCurrencyDetails = isZcash
+//       ? CURRENCIES.ZCASH
+//       : CURRENCIES.AVALANCHE;
+//     const oppositeCurrencyDetails = isZcash
+//       ? CURRENCIES.AVALANCHE
+//       : CURRENCIES.ZCASH;
+
+//     // Set selected currency UI
+//     if (isFromOption) {
+//       fromCurrencyGroup.innerHTML = createCurrencyHTML(selectedCurrencyDetails);
+//       toCurrencyGroup.innerHTML = createCurrencyHTML(oppositeCurrencyDetails);
+//       fromAmountIcon.src = createIconHTML(selectedCurrencyDetails.getIcon(currentTheme));
+//       toAmountIcon.src = createIconHTML(oppositeCurrencyDetails.getIcon(currentTheme));
+//       fromCurrencyName.textContent = selectedCurrencyDetails.symbol;
+//       toCurrencyName.textContent = oppositeCurrencyDetails.symbol;
+//       availableBalanceAmount.textContent =
+//         selectedCurrencyDetails.symbol === CURRENCIES.ZCASH.symbol
+//           ? parseFloat(elements.availableZcash).toFixed(4)
+//           : parseFloat(elements.availableAvalanche).toFixed(4);
+//       availableBalanceText.textContent = selectedCurrencyDetails.symbol;
+//     } else {
+//       toCurrencyGroup.innerHTML = createCurrencyHTML(selectedCurrencyDetails);
+//       fromCurrencyGroup.innerHTML = createCurrencyHTML(oppositeCurrencyDetails);
+//       fromAmountIcon.src = createIconHTML(oppositeCurrencyDetails.getIcon(currentTheme));
+//       toAmountIcon.src = createIconHTML(selectedCurrencyDetails.getIcon(currentTheme));
+//       fromCurrencyName.textContent = oppositeCurrencyDetails.symbol;
+//       toCurrencyName.textContent = selectedCurrencyDetails.symbol;
+//       availableBalanceAmount.textContent =
+//         oppositeCurrencyDetails.symbol === CURRENCIES.ZCASH.symbol
+//           ? parseFloat(elements.availableZcash).toFixed(4)
+//           : parseFloat(elements.availableAvalanche).toFixed(4);
+//       availableBalanceText.textContent = oppositeCurrencyDetails.symbol;
+//     }
+
+//     // Change currency name colors to active state when input is not empty
+//     elements.currencyName[0].style.color = "#6e6e6e";
+//     elements.currencyName[1].style.color = "#6e6e6e";
+
+//     if (parseFloat(availableBalanceAmount.textContent) === 0) {
+//       setContinueButtonState(true);
+//     } else if (
+//       parseFloat(elements.sendAmountNode.value) >
+//       parseFloat(availableBalanceAmount.textContent)
+//     ) {
+//       setContinueButtonState(true);
+//     } else {
+//       setContinueButtonState(false);
+//     }
+
+//     sendAmountNode.value = DEFAULT_AMOUNT.toFixed(4);
+//     receiveAmountNode.value = (DEFAULT_AMOUNT - BRIDGING_FEE).toFixed(4);
+//   }
+
+//   // Create HTML for currency display
+//   function createCurrencyHTML(currency) {
+//     return `
+//       <img src="./img/${currency.getIcon(currentTheme)}" class="icon-coin-sm currency-icon-circle" />
+//       ${currency.name}
+//     `;
+//   }
+
+//   function createIconHTML(icon) {
+//     return `./img/${icon}`;
+//   }
+
+//   // Event Listener for From Options
+//   fromOptions.forEach((option) => {
+//     option.addEventListener("click", (e) => {
+//       const selectedOption = e.target.closest("div");
+//       if (!selectedOption) return;
+
+//       const currencyName = selectedOption.textContent.trim();
+//       updateCurrencyUI(currencyName, true);
+//       select.classList.remove("open");
+//     });
+//   });
+
+//   // Event Listener for To Options
+//   toOptions.forEach((option) => {
+//     option.addEventListener("click", (e) => {
+//       const selectedOption = e.target.closest("div");
+//       if (!selectedOption) return;
+
+//       const currencyName = selectedOption.textContent.trim();
+//       updateCurrencyUI(currencyName, false);
+//       select.classList.remove("open");
+//     });
+//   });
+
+//   nodeOptions.forEach((option) => {
+//     option.addEventListener("click", (e) => {
+//       let value = e.target.textContent.trim();
+//       if (window.innerWidth < 1200 && value.length >= 35) {
+//         value = `${value.slice(0, 6)}...${value.slice(-4)}`;
+//       }
+//       trigger.querySelector("span").textContent = value;
+//       select.classList.remove("open");
+//     });
+//   });
+
+//   // Close dropdown if clicked outside
+//   document.addEventListener("click", (e) => {
+//     if (!select.contains(e.target)) {
+//       select.classList.remove("open");
+//     }
+//   });
+// });

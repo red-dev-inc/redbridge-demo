@@ -13,6 +13,12 @@
     <link rel="stylesheet" href="./css/index.css" />
 
     <!-- Importing JavaScript modules -->
+    <script>
+      (function () {
+        const savedTheme = localStorage.getItem("theme") || "red";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+      })();
+    </script>
     <script type="module" src="./js/main.js"></script>
     <script type="module" src="./js/statusInput.js"></script>
   </head>
@@ -40,8 +46,8 @@
           y2="-0.124"
           gradientUnits="objectBoundingBox"
         >
-          <stop offset="0" stop-color="#ef1a1a" />
-          <stop offset="1" stop-color="#780d0d" stop-opacity="0.741" />
+          <stop id="gradientLeftStop1" offset="0" stop-color="#ef1a1a" />
+          <stop id="gradientLeftStop2" offset="1" stop-color="#780d0d" stop-opacity="0.741" />
         </linearGradient>
       </defs>
       <path
@@ -78,8 +84,8 @@
           y2="0.244"
           gradientUnits="objectBoundingBox"
         >
-          <stop offset="0" stop-color="#ef1a1a" />
-          <stop offset="1" stop-color="#780d0d" />
+          <stop id="gradientBottomStop1" offset="0" stop-color="#ef1a1a" />
+          <stop id="gradientBottomStop2" offset="1" stop-color="#780d0d" />
         </linearGradient>
       </defs>
       <path
@@ -96,12 +102,40 @@
     <img src="./img/zavax-icon.png" class="header-icon ds-icon" />
 
     <div class="main-container">
-      <img src="./img/help-icon.svg" class="help-icon mb-circle-icon" id="mbHelpButton" />
+      <div class="help-icons-group">
+        <div class="tooltip">
+          <div id="mbSwitchMode" class="mode-switch mb-switch"></div>
+          <div id="mbThemeInfo" class="tooltiptext">Dark Mode</div>
+        </div>
+
+        <div class="tooltip">
+          <img
+            src="./img/help_icon.svg"
+            class="help-icon mb-circle-icon"
+            id="mbHelpButton"
+          />
+          <div class="tooltiptext">Help</div>
+        </div>
+      </div>
 
       <!-- Title section -->
       <div class="title-container">
         <span class="label-title-transaction">Transaction Status</span>
-        <img src="./img/help-icon.svg" class="help-icon ds-circle-icon" id="dsHelpButton" />
+        <div class="help-icons-group">
+          <div class="tooltip">
+            <div id="dsSwitchMode" class="mode-switch ds-switch"></div>
+            <span id="dsThemeInfo" class="tooltiptext">Dark Mode</span>
+          </div>
+          
+          <div class="tooltip">
+            <img
+              src="./img/help_icon.svg"
+              class="help-icon ds-circle-icon"
+              id="dsHelpButton"
+            />
+            <div id="helpInfo" class="tooltiptext">Help</div>
+          </div>
+        </div>
         <img src="./img/zavax-icon.png" class="header-icon mb-icon" />
       </div>
 
@@ -109,7 +143,7 @@
       <div class="transaction-bridge-status">
         <div class="transaction-status">
           <span class="transaction-label">
-            <img src="./img/iconcheck.svg" class="icon-check-transaction" />
+            <img src="./img/iconcheck.svg" id="checkIcon" class="icon-check-transaction" />
             Transaction Completed
           </span>
         </div>

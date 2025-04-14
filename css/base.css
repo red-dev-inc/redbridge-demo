@@ -24,7 +24,7 @@
 }
 
 body {
-  background: #fb4149 0% 0% no-repeat padding-box;
+  background: var(--bg-color) 0% 0% no-repeat padding-box;
   opacity: 1;
   min-height: 100vh;
   display: flex;

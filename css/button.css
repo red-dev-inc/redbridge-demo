@@ -2,9 +2,9 @@
 
 .continue-button {
   background: transparent;
-  border: 3px solid #ffffff;
+  border: 3px solid var(--border-color);
   border-radius: 15px;
-  color: white;
+  color: var(--primary-text-color);
   padding: 1.2rem 0.5rem;
   width: 100%;
   margin-top: 2.5rem;
@@ -19,9 +19,9 @@
 .btn-bridge,
 .btn-again {
   background-color: transparent;
-  border: 2px solid white;
+  border: 2px solid var(--border-color);
   border-radius: 15px;
-  color: white;
+  color: var(--primary-text-color);
   width: calc(50% - 0.6rem);
   padding: 1.2rem 0.5rem;
   font-size: 1.5rem;
@@ -32,4 +32,16 @@
 .btn-again {
   width: 100%;
   margin-top: 2.5rem;
+}
+
+.mode-switch{
+  height: 1.7rem;
+  width: 1.7rem;
+  border-radius: 50%;
+  border: 6px solid var(--mode-switch-color);
+  cursor: pointer;
+}
+
+.mb-switch {
+  display: none;
 }

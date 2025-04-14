@@ -3,11 +3,11 @@
   position: relative;
   width: 100%;
   font-size: 0.9rem;
-  color: white;
+  color: var(--primary-text-color);
 }
 
 .custom-select-trigger {
-  border: 2px solid white;
+  border: 2px solid var(--border-color);
   padding: 0.6rem 1rem;
   border-radius: 6px;
   cursor: pointer;
@@ -30,8 +30,8 @@
   top: 100%;
   left: 0;
   right: 0;
-  background: #e92f38;
-  border: 2px solid white;
+  background: var(--card-bg);
+  border: 2px solid var(--border-color);
   border-radius: 8px;
   z-index: 10;
   display: none;

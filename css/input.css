@@ -3,8 +3,8 @@
 .form-select,
 .form-control {
   background-color: rgba(255, 255, 255, 0.1);
-  border: 2px solid white;
-  color: white;
+  border: 2px solid var(--border-color);
+  color: var(--primary-text-color);
   padding: 0.6rem 1.5rem;
   border-radius: 6px;
   font-size: 1.1rem;
@@ -14,7 +14,7 @@
 .form-control:focus {
   background-color: rgba(255, 255, 255, 0.15);
   border-color: rgba(255, 255, 255, 0.8);
-  color: white;
+  color: var(--primary-text-color);
   box-shadow: none;
 }
 
@@ -22,8 +22,8 @@
 .form-control:hover,
 .form-control:focus,
 .form-control input {
-  background-color: #ffffff;
-  color: #6e6e6e;
+  background-color: var(--secondary-color);
+  color: var(--secondary-text-color);
   text-align: right;
   font-family: "Segoe UI";
 }
@@ -32,9 +32,10 @@
   font-size: 1.1rem;
   display: flex;
   align-items: center;
-  background-color: #fff;
+  background-color: var(--secondary-color);
   border-radius: 6px;
   padding: 0.6rem 1.5rem;
+  box-shadow: var(--input-box-shadow);
 }
 
 .currency-input .form-control {
