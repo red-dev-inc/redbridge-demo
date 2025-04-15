@@ -17,6 +17,7 @@
     --tooltip-bg: #fb4149;
     --glow-bg-color: #ffffff1a;
     --glow-bg-shadow-color: #ffffff67;
+    --dropdown-bg: #e92f38;
   }
   
   [data-theme="dark"] {
@@ -37,6 +38,7 @@
     --tooltip-bg: #2e2e2e;
     --glow-bg-color: #ffffff1a;
     --glow-bg-shadow-color: #ffffff67;
+    --dropdown-bg: #1d1d1d;
   }
 
   [data-theme="light"] {
@@ -58,6 +60,7 @@
     --tooltip-bg: #f9f9f9;
     --glow-bg-color: #ffffffb3;
     --glow-bg-shadow-color: transparent;
+    --dropdown-bg: #f9f9f9;
   }
 
   [data-theme="zebra"] {
@@ -78,4 +81,5 @@
     --tooltip-bg: #141414;
     --glow-bg-color: #ffffff1a;
     --glow-bg-shadow-color: #F4B72867;
+    --dropdown-bg: #141414;
   }
